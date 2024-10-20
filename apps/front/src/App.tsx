@@ -22,6 +22,7 @@ function App() {
     };
     getStatus();
   }, []);
+
   return (
     <>
       <div>
