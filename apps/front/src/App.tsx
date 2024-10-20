@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import { initClient } from "@ts-rest/core";
-import { contract } from "@repo/contract";
+import { useEffect, useState } from 'react';
+import './App.css';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import { initClient } from '@ts-rest/core';
+import { contract } from '@repo/contract';
 
 const client = initClient(contract, {
-  baseUrl: "http://localhost:3000",
+  baseUrl: 'http://localhost:3000',
 });
 function App() {
   const [count, setCount] = useState(0);
-  const [status, setStatus] = useState("waiting");
+  const [status, setStatus] = useState('waiting');
 
   useEffect(() => {
     const getStatus = async () => {
@@ -34,17 +34,13 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
         <p>
           {status}
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
     </>
   );
 }
