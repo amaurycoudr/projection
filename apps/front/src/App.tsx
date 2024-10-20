@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import { initClient } from "@ts-rest/core";
+import { contract } from "@repo/contract";
 
+const client = initClient(contract, {
+  baseUrl: "http://localhost:3000",
+});
 function App() {
   const [count, setCount] = useState(0);
+  const [status, setStatus] = useState("waiting");
 
+  useEffect(() => {
+    const getStatus = async () => {
+      const { body, status } = await client.getHealth();
+
+      if (status === 200) {
+        setStatus(body.status);
+      }
+    };
+    getStatus();
+  }, []);
   return (
     <>
       <div>
@@ -22,6 +38,7 @@ function App() {
           count is {count}
         </button>
         <p>
+          {status}
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
