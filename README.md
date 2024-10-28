@@ -25,3 +25,14 @@ You can now start the project :
 ```bash
 pnpm dev
 ```
+
+# TODOS
+
+## BACK
+
+- [ ] set up the DB with drizzle
+
+## FRONT
+
+- [ ] set up tanstack router / query
+- [ ] set up tailwindcss
