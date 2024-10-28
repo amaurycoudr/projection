@@ -15,9 +15,18 @@
   },
   "scripts": {
     "dev": "tsup src/index.ts --format cjs,esm --dts  --watch",
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "eslint ./src/**"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "typings": "./src/index.ts"
+  "typings": "./src/index.ts",
+  "lint-staged": {
+    "*.{js, jsx,ts,tsx}": [
+      "eslint --quiet --fix"
+    ],
+    "*.{json,js,ts,jsx,tsx,html}": [
+      "prettier --write --ignore-unknown"
+    ]
+  }
 }
