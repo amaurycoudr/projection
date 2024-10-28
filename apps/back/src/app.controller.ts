@@ -11,9 +11,8 @@ export class AppController {
   async handler() {
     return tsRestHandler(contract, {
       getHealth: async () => {
-        new Promise((resolve) => setTimeout(() => resolve(4), 10)).then((a) => {
-          'a';
-        });
+        console.log('e');
+
         return { status: 200, body: { status: this.appService.getHello() } };
       },
     });
