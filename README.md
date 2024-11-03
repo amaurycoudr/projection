@@ -36,3 +36,12 @@ pnpm dev
 
 - [ ] set up tanstack router / query
 - [ ] set up tailwindcss
+
+
+## CONTRACT
+
+- [ ] generate a swagger
+
+## chess
+
+- [ ] code the game
