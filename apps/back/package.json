@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "drizzle:studio": "npx drizzle-kit studio --config ./src/drizzle/drizzle.config.ts",
+    "drizzle:generate": "npx drizzle-kit generate --config ./src/drizzle/drizzle.config.ts",
+    "drizzle:migrate": "npx drizzle-kit migrate --config ./src/drizzle/drizzle.config.ts",
+    "drizzle:push": "npx drizzle-kit push --config ./src/drizzle/drizzle.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -27,6 +31,8 @@
     "@repo/contract": "workspace:*",
     "@ts-rest/core": "^3.51.0",
     "@ts-rest/nest": "^3.51.0",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.28.0",
     "drizzle-orm": "^0.36.0",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",

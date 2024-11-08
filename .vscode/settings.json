@@ -15,5 +15,6 @@
     "**/node_modules": true,
     "**/.turbo": true,
     "**/dist": true,
+    "**/pgdata": true
   }
 }

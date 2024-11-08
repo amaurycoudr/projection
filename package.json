@@ -5,6 +5,10 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "drizzle:studio": "turbo drizzle:studio",
+    "drizzle:generate": "turbo drizzle:generate",
+    "drizzle:migrate": "turbo drizzle:migrate",
+    "drizzle:push": "turbo drizzle:push",
     "lint-staged": "lint-staged",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
