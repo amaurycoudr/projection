@@ -7,10 +7,11 @@
 To be able to run the project you need :
 
 - [pnpm](https://pnpm.io/fr/installation)
+- [docker](https://docs.docker.com/engine/install/)
 
 ## Installation
 
-To run the project you need to run :
+To set up the project you need to run :
 
 ```bash
 pnpm install
@@ -22,6 +23,11 @@ this will resolve all the deps.
 
 You can now start the project :
 
+First launch the docker image of the DB :
+```bash
+docker-compose build
+```
+Than you can launch the dev app :
 ```bash
 pnpm dev
 ```

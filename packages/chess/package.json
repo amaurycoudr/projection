@@ -1,0 +1,31 @@
+{
+  "name": "@repo/chess",
+  "type": "module",
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "^9.13.0",
+    "globals": "^15.9.0",
+    "tsup": "^8.3.0",
+    "typescript-eslint": "^8.7.0"
+  },
+  "scripts": {
+    "dev": "tsup src/index.ts --format cjs,esm --dts  --watch",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "eslint ./src/**"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "typings": "./src/index.ts",
+  "lint-staged": {
+    "*.{js, jsx,ts,tsx}": [
+      "eslint --quiet --fix"
+    ],
+    "*.{json,js,ts,jsx,tsx,html}": [
+      "prettier --write --ignore-unknown"
+    ]
+  }
+}

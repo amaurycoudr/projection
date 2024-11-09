@@ -20,7 +20,7 @@ describe('AppController', () => {
 
       expect(test.status).toBe(200);
       if (test.status === 200) {
-        expect(test.body.status).toBe('Hello World');
+        expect(test.body.status).toBe('Hello World!');
       }
     });
   });
