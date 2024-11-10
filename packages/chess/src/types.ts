@@ -4,12 +4,6 @@ export type Kind = (typeof KINDS)[number];
 export const COLORS = ['black', 'white'] as const;
 export type Color = (typeof COLORS)[number];
 
-export const BOARD_COLUMN = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
-export type BoardColumn = (typeof BOARD_COLUMN)[number];
-
-export const BOARD_ROW = ['1', '2', '3', '4', '5', '6', '7', '8'] as const;
-export type BoardRow = (typeof BOARD_ROW)[number];
-
 export const BOARD_POSITIONS = [
     'a1',
     'b1',
@@ -78,7 +72,7 @@ export const BOARD_POSITIONS = [
 ] as const;
 export type BoardPosition = (typeof BOARD_POSITIONS)[number];
 
-export type PieceInfo = {
+export type Piece = {
     initialPosition: BoardPosition;
     kind: Kind;
     color: Color;
@@ -87,10 +81,14 @@ export type PieceInfo = {
 export type Move = {
     from: BoardPosition;
     to: BoardPosition;
-} & PieceInfo;
+} & Piece;
+
+export type PieceOnSquare = Piece & { square: BoardPosition };
+
+export type BoardState = PieceOnSquare[];
 
 export type GameState = {
     history: Move[];
     currentPlayer: Color;
-    board: (PieceInfo & { currentPosition: BoardPosition })[];
+    board: BoardState;
 };

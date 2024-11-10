@@ -5,15 +5,22 @@ package that handles chess rules and exposes an API to handle the state of a che
 # API WIP
 
 ```ts
-const getStartBoard = (): BoardState => {
+import { GameState, Move } from './types';
+
+const getInitialState = (): GameState => {
     // RETURN START BOARD STATE
 };
 
-const play = (board, move): BoardState => {
+
+const getSquareContent = (board, tile: "a1" | "..."): GameState["board"][number] | undefined => {// 
+    // RETURN THE PIECE ON THE TILE OR UNDEFINED
+}
+
+const play = (gameState, move): GameState => {
     // CHECK IF THE MOVE IS VALID THEN RETURN THE NEW STATE
 };
 
-const getMoves = (board): Move[] => {
+const getMoves = (gameState): Move[] => {
     // BOARD
 };
 ```
@@ -32,10 +39,17 @@ type Move = {
     to: Postion;
 } & PieceInfo;
 
-type BoardState = {
+type GameState = {
     playerTurn: Color;
     history: Move[];
     board: (PieceInfo & { postion: Position })[];
-    gameState: GameState;
 };
 ```
+
+# Definition of a valid move
+
+a move is valid if :
+
+- it is the current player turn
+- the piece can do that movement
+- the king is not put in check after the move
