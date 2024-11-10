@@ -1,4 +1,4 @@
-import type { BoardPosition, BoardState, GameState, PieceOnSquare } from './types.js';
+import type { BoardPosition, BoardState, GameState, Move, PieceOnSquare } from './types.js';
 
 const INITIAL_BOARD = [
     { initialPosition: 'a1', color: 'white', kind: 'rook', square: 'a1' },
@@ -36,13 +36,28 @@ const INITIAL_BOARD = [
 ] satisfies BoardState;
 
 export const getInitialState = (): GameState => {
-    return {
-        history: [],
-        currentPlayer: 'white',
-        board: INITIAL_BOARD,
-    };
+    return { history: [], currentPlayer: 'white', board: INITIAL_BOARD };
 };
 
 export const getSquareContent = (board: BoardState, position: BoardPosition): PieceOnSquare | undefined => {
     return board.find(({ square }) => position === square);
+};
+
+/**
+ * Take in argument a board and a move return the board after the move without checking if it is a valid chess move
+ */
+export const getNextBoard = (board: BoardState, { capturedPiece, promoteTo, to, from, isCastling }: Move): BoardState => {
+    return board
+        .filter(({ square }) => {
+            return square !== capturedPiece?.square;
+        })
+        .map((piece) => {
+            if (piece.square === to && isCastling) {
+                return { ...piece, square: from };
+            }
+
+            if (piece.square !== from) return piece;
+
+            return { ...piece, square: to, kind: promoteTo ?? piece.kind };
+        });
 };

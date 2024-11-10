@@ -1,5 +1,5 @@
-export const KINDS = ['king', 'queen', 'pawn', 'rook', 'bishop', 'knight'] as const;
-export type Kind = (typeof KINDS)[number];
+export const PIECE_KINDS = ['king', 'queen', 'pawn', 'rook', 'bishop', 'knight'] as const;
+export type PieceKind = (typeof PIECE_KINDS)[number];
 
 export const COLORS = ['black', 'white'] as const;
 export type Color = (typeof COLORS)[number];
@@ -72,18 +72,17 @@ export const BOARD_POSITIONS = [
 ] as const;
 export type BoardPosition = (typeof BOARD_POSITIONS)[number];
 
-export type Piece = {
-    initialPosition: BoardPosition;
-    kind: Kind;
-    color: Color;
-};
-
-export type Move = {
-    from: BoardPosition;
-    to: BoardPosition;
-} & Piece;
+export type Piece = { initialPosition: BoardPosition; kind: PieceKind; color: Color };
 
 export type PieceOnSquare = Piece & { square: BoardPosition };
+
+export type Move = {
+    capturedPiece?: PieceOnSquare;
+    from: BoardPosition;
+    isCastling?: boolean;
+    promoteTo?: PieceKind;
+    to: BoardPosition;
+};
 
 export type BoardState = PieceOnSquare[];
 
