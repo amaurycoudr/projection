@@ -3,7 +3,7 @@ import { DrizzleService } from './drizzle.service';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
-  providers: [DrizzleService, ConfigService],
-  exports: [DrizzleService],
+    providers: [DrizzleService, ConfigService],
+    exports: [DrizzleService],
 })
 export class DrizzleModule {}

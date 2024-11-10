@@ -6,8 +6,8 @@ import { configSchema } from './config/config';
 import { DrizzleModule } from './drizzle/drizzle.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ validate: configSchema.parse }), DrizzleModule],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [ConfigModule.forRoot({ validate: configSchema.parse }), DrizzleModule],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

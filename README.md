@@ -6,8 +6,8 @@
 
 To be able to run the project you need :
 
-- [pnpm](https://pnpm.io/fr/installation)
-- [docker](https://docs.docker.com/engine/install/)
+-   [pnpm](https://pnpm.io/fr/installation)
+-   [docker](https://docs.docker.com/engine/install/)
 
 ## Installation
 
@@ -24,10 +24,13 @@ this will resolve all the deps.
 You can now start the project :
 
 First launch the docker image of the DB :
+
 ```bash
 docker-compose build
 ```
+
 Than you can launch the dev app :
+
 ```bash
 pnpm dev
 ```
@@ -36,17 +39,17 @@ pnpm dev
 
 ## BACK
 
-- [ ] set up the DB with drizzle
+-   [ ] set up the DB with drizzle
 
 ## FRONT
 
-- [ ] set up tanstack router / query
-- [ ] set up tailwindcss
+-   [ ] set up tanstack router / query
+-   [ ] set up tailwindcss
 
 ## CONTRACT
 
-- [ ] generate a swagger
+-   [ ] generate a swagger
 
 ## chess
 
-- [ ] code the game
+-   [ ] code the game

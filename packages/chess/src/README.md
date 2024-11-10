@@ -24,7 +24,7 @@ const getMoves = (board): Move[] => {
 type PieceInfo = {
     color: Color;
     initialPosition: Position;
-    kind: Kind
+    kind: Kind;
 };
 
 type Move = {
@@ -37,5 +37,5 @@ type BoardState = {
     history: Move[];
     board: (PieceInfo & { postion: Position })[];
     gameState: GameState;
-}
+};
 ```
