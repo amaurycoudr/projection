@@ -9,7 +9,7 @@ export class AppController {
 
     @TsRestHandler(contract)
     async handler() {
-        return tsRestHandler(contract, {
+        return tsRestHandler(contract.core, {
             getHealth: async () => {
                 return { status: 200, body: { status: this.appService.getHello() } };
             },

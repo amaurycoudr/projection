@@ -6,8 +6,8 @@
 
 To be able to run the project you need :
 
--   [pnpm](https://pnpm.io/fr/installation)
--   [docker](https://docs.docker.com/engine/install/)
+- [pnpm](https://pnpm.io/fr/installation)
+- [docker](https://docs.docker.com/engine/install/)
 
 ## Installation
 
@@ -32,6 +32,10 @@ docker-compose build
 Than you can launch the dev app :
 
 ```bash
+docker-compose up -d
+```
+
+```bash
 pnpm dev
 ```
 
@@ -39,7 +43,10 @@ pnpm dev
 
 ## BACK
 
--   [ ] set up the DB with drizzle
+-   [X] set up the DB with drizzle
+-   [ ] create user model
+-   [ ] create user services
+-   [ ] create user controller
 
 ## FRONT
 
