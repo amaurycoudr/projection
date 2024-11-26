@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 export class AppController {
     constructor(private readonly appService: AppService) {}
 
-    @TsRestHandler(contract)
+    @TsRestHandler(contract.core)
     async handler() {
         return tsRestHandler(contract.core, {
             getHealth: async () => {

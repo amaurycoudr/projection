@@ -7,6 +7,7 @@ import { contract } from '@repo/contract';
 
 const client = initClient(contract, {
     baseUrl: 'http://localhost:3000',
+    throwOnUnknownStatus: true,
 });
 function App() {
     const [count, setCount] = useState(0);
@@ -14,7 +15,7 @@ function App() {
 
     useEffect(() => {
         const getStatus = async () => {
-            const { body, status } = await client.getHealth();
+            const { body, status } = await client.core.getHealth();
 
             if (status === 200) {
                 setStatus(body.status);

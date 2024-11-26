@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AUTH_ERRORS, contract } from '@repo/contract';
 import { eq } from 'drizzle-orm';
-import { lower } from 'src/drizzle/drizzle.helper';
+import { lower, UNIQUE_CONSTRAINT } from 'src/drizzle/drizzle.helper';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import { users } from 'src/user/schemas/user.schema';
 import { z } from 'zod';
@@ -32,7 +32,13 @@ export class AuthenticationService {
     signUp = async (signUpPayload: z.infer<(typeof contract)['auth']['signUp']['body']>) => {
         const hashedPassword = await this.hashingService.hash(signUpPayload.password);
 
-        await this.drizzleService.db.insert(users).values({ email: signUpPayload.email, password: hashedPassword }).returning();
+        try {
+            await this.drizzleService.db.insert(users).values({ email: signUpPayload.email, password: hashedPassword }).returning();
+        } catch (error) {
+            if ((error as Record<string, unknown>).code === UNIQUE_CONSTRAINT) {
+                return AUTH_ERRORS.emailAlreadyUsed;
+            }
+        }
 
         return { token: 'azerty' };
     };

@@ -5,6 +5,7 @@ export const configSchema = z.object({
     POSTGRES_USER: z.string(),
     POSTGRES_PORT: z.coerce.number(),
     POSTGRES_HOST: z.string(),
+    BASE_URL: z.string(),
 });
 
 export type Config = z.infer<typeof configSchema>;

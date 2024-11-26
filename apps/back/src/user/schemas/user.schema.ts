@@ -8,5 +8,5 @@ export const users = pgTable(
         email: varchar({ length: 320 }).notNull(),
         password: varchar({ length: 100 }).notNull(),
     },
-    (table) => [{ emailIndex: uniqueIndex('emailUniqueIndex').on(lower(table.email)) }],
+    (table) => [uniqueIndex('emailUniqueIndex').on(lower(table.email))],
 );

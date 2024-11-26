@@ -3,3 +3,5 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"email" varchar(320) NOT NULL,
 	"password" varchar(100) NOT NULL
 );
+--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "emailUniqueIndex" ON "users" USING btree (lower("email"));

@@ -3,11 +3,11 @@ import { contract } from '@repo/contract';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
 import { AuthenticationService } from './authentication.service';
 
-@Controller('authentication')
+@Controller()
 export class AuthenticationController {
     constructor(private readonly authenticationService: AuthenticationService) {}
 
-    @TsRestHandler(contract)
+    @TsRestHandler(contract.auth)
     async handler() {
         return tsRestHandler(contract.auth, {
             signIn: async ({ body }) => {
@@ -23,6 +23,12 @@ export class AuthenticationController {
             },
             signUp: async ({ body }) => {
                 const result = await this.authenticationService.signUp(body);
+                if (typeof result === 'string') {
+                    return {
+                        status: 400,
+                        body: { message: result },
+                    };
+                }
                 return {
                     status: 201,
                     body: result,
