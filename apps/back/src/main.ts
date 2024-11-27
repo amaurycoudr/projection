@@ -10,18 +10,19 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.enableCors();
 
-    const document = generateOpenApi(contract, {
-        info: {
-            title: 'Projection API',
-            version: '1.0.0',
-        },
-    });
-
     const configService = app.get(ConfigService<Config>);
 
+    const document = generateOpenApi(
+        contract,
+        {
+            info: { title: 'Projection API', version: '1.0.0' },
+            servers: [{ url: configService.get('BASE_URL') }],
+        },
+        { setOperationId: true },
+    );
+
     SwaggerModule.setup('api-docs', app, document, {
-        jsonDocumentUrl: 'api-docs/json',
-        url: configService.get('BASE_URL'),
+        jsonDocumentUrl: 'api-docs.json',
     });
 
     await app.listen(process.env.PORT ?? 3000);
