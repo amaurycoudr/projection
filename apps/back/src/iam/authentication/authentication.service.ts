@@ -9,6 +9,7 @@ import { HashingService } from '../hashing/hashing.service';
 import { ConfigService } from '@nestjs/config';
 import { Config } from 'src/config/config';
 import { JwtService } from '@nestjs/jwt';
+import { ActiveUserData } from '../decorators/active-user.decorator';
 
 type SignInUpResponse = { result: 'error'; data: AuthErrors } | { result: 'success'; data: { accessToken: string } };
 @Injectable()
@@ -50,13 +51,10 @@ export class AuthenticationService {
     };
 
     private getAccessToken = async (email: string, id: number) =>
-        await this.jwtService.signAsync(
-            { sub: id, email: email },
-            {
-                audience: this.configService.get('JWT_TOKEN_AUDIENCE'),
-                issuer: this.configService.get('JWT_TOKEN_ISSUER'),
-                secret: this.configService.get('JWT_SECRET'),
-                expiresIn: this.configService.get('JWT_ACCESS_TOKEN_TTL'),
-            },
-        );
+        await this.jwtService.signAsync({ sub: id, email: email } satisfies ActiveUserData, {
+            audience: this.configService.get('JWT_TOKEN_AUDIENCE'),
+            issuer: this.configService.get('JWT_TOKEN_ISSUER'),
+            secret: this.configService.get('JWT_SECRET'),
+            expiresIn: this.configService.get('JWT_ACCESS_TOKEN_TTL'),
+        });
 }

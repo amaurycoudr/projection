@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Config } from 'src/config/config';
-import { REQUEST_USER_KEY } from 'src/iam/iam.const';
+import { REQUEST_USER_KEY } from 'src/iam/iam.constants';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {

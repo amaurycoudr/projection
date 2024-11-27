@@ -5,4 +5,4 @@ export const AUTH_KINDS = {
     None: 'none',
 } as const;
 
-export type AuthKinds = (typeof AUTH_KINDS)[keyof typeof AUTH_KINDS];
+export type AuthKind = (typeof AUTH_KINDS)[keyof typeof AUTH_KINDS];

@@ -2,8 +2,8 @@ import { Controller } from '@nestjs/common';
 import { contract } from '@repo/contract';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
 import { AuthenticationService } from './authentication.service';
-import { Auth } from './auth.decorator';
-import { AUTH_KINDS } from '../iam.const';
+import { Auth } from './decorators/authentication.decorator';
+import { AUTH_KINDS } from '../iam.constants';
 
 @Controller()
 export class AuthenticationController {
