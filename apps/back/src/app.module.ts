@@ -7,6 +7,7 @@ import { configSchema } from './config/config';
 import { DrizzleModule } from './drizzle/drizzle.module';
 import { IamModule } from './iam/iam.module';
 import { UserModule } from './user/user.module';
+import { RedisModule } from './redis/redis.module';
 import jwtConfig from './config/jwt.config';
 
 @Module({
@@ -16,6 +17,7 @@ import jwtConfig from './config/jwt.config';
         DrizzleModule,
         UserModule,
         IamModule,
+        RedisModule,
     ],
     controllers: [AppController],
     providers: [AppService],

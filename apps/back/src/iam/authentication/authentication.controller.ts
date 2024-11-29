@@ -17,26 +17,28 @@ export class AuthenticationController {
                 const { result, data } = await this.authenticationService.signIn(body);
 
                 if (result === 'error') {
-                    return {
-                        status: 403,
-                        body: { message: data },
-                    };
+                    return { status: 400, body: { message: data } };
                 }
+
                 return { status: 200, body: data };
             },
             signUp: async ({ body }) => {
                 const { result, data } = await this.authenticationService.signUp(body);
 
                 if (result === 'error') {
-                    return {
-                        status: 400,
-                        body: { message: data },
-                    };
+                    return { status: 400, body: { message: data } };
                 }
-                return {
-                    status: 201,
-                    body: data,
-                };
+
+                return { status: 201, body: data };
+            },
+            refreshTokens: async ({ body }) => {
+                const { result, data } = await this.authenticationService.refreshTokens(body.refreshToken);
+
+                if (result === 'error') {
+                    return { status: 400, body: { message: data } };
+                }
+
+                return { status: 200, body: data };
             },
         });
     }

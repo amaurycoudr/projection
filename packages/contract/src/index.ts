@@ -11,26 +11,41 @@ export const AUTH_ERRORS = {
     unknownUser: 'unknownUser',
     wrongPassword: 'wrongPassword',
     emailAlreadyUsed: 'emailAlreadyUsed',
+    invalidRefreshToken: 'invalidRefreshToken',
 } as const;
 
 export type AuthErrors = (typeof AUTH_ERRORS)[keyof typeof AUTH_ERRORS];
+
+const tokensSchema = z.object({ accessToken: z.string(), refreshToken: z.string() });
 
 const authContract = c.router({
     signUp: {
         path: '/auth/sign-up',
         method: 'POST',
         body: z.object({ email: z.string().email(), password: z.string().min(8).max(50) }),
-        responses: { 201: z.object({ accessToken: z.string() }), 400: z.object({ message: z.literal(AUTH_ERRORS.emailAlreadyUsed) }) },
+        responses: {
+            201: tokensSchema,
+            400: z.object({ message: z.literal(AUTH_ERRORS.emailAlreadyUsed) }),
+        },
     },
     signIn: {
         path: '/auth/sign-in',
         method: 'POST',
         body: z.object({ email: z.string(), password: z.string() }),
         responses: {
-            200: z.object({ accessToken: z.string() }),
-            403: z.object({
+            200: tokensSchema,
+            400: z.object({
                 message: z.enum([AUTH_ERRORS.unknownUser, AUTH_ERRORS.wrongPassword]),
             }),
+        },
+    },
+    refreshTokens: {
+        path: '/auth/refresh-tokens',
+        method: 'POST',
+        body: z.object({ refreshToken: z.string() }),
+        responses: {
+            200: tokensSchema,
+            400: z.object({ message: z.literal(AUTH_ERRORS.invalidRefreshToken) }),
         },
     },
 });

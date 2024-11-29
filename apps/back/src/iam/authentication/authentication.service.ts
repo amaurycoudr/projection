@@ -1,24 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AUTH_ERRORS, AuthErrors, contract } from '@repo/contract';
 import { eq } from 'drizzle-orm';
+import { Config } from 'src/config/config';
 import { lower, UNIQUE_CONSTRAINT } from 'src/drizzle/drizzle.helper';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
-import { users } from 'src/user/schemas/user.schema';
+import { User, users } from 'src/user/schemas/user.schema';
 import { z } from 'zod';
-import { HashingService } from '../hashing/hashing.service';
-import { ConfigService } from '@nestjs/config';
-import { Config } from 'src/config/config';
-import { JwtService } from '@nestjs/jwt';
 import { ActiveUserData } from '../decorators/active-user.decorator';
+import { HashingService } from '../hashing/hashing.service';
+import { RefreshTokenIdsStorage } from './refresh-token-ids.storage/refresh-token-ids.storage';
 
-type SignInUpResponse = { result: 'error'; data: AuthErrors } | { result: 'success'; data: { accessToken: string } };
+type Tokens = { accessToken: string; refreshToken: string };
+type SignInUpResponse = { result: 'error'; data: AuthErrors } | { result: 'success'; data: Tokens };
 @Injectable()
 export class AuthenticationService {
     constructor(
         private readonly drizzleService: DrizzleService,
         private readonly hashingService: HashingService,
         private readonly jwtService: JwtService,
-        private readonly configService: ConfigService<Config>,
+        private readonly configService: ConfigService<Config, true>,
+        private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
     ) {}
 
     signIn = async (signInPayload: z.infer<(typeof contract)['auth']['signIn']['body']>) => {
@@ -33,7 +36,8 @@ export class AuthenticationService {
 
         if (!isPasswordEqual) return { data: AUTH_ERRORS.wrongPassword, result: 'error' } satisfies SignInUpResponse;
 
-        return { data: { accessToken: await this.getAccessToken(user.email, user.id) }, result: 'success' } satisfies SignInUpResponse;
+        const tokens = await this.generateTokens(user);
+        return { data: tokens, result: 'success' } satisfies SignInUpResponse;
     };
 
     signUp = async (signUpPayload: z.infer<(typeof contract)['auth']['signUp']['body']>) => {
@@ -41,7 +45,9 @@ export class AuthenticationService {
 
         try {
             const [user] = await this.drizzleService.db.insert(users).values({ email: signUpPayload.email, password: hashedPassword }).returning();
-            return { data: { accessToken: await this.getAccessToken(user!.email, user!.id) }, result: 'success' } satisfies SignInUpResponse;
+            const tokens = await this.generateTokens(user!);
+
+            return { data: tokens, result: 'success' } satisfies SignInUpResponse;
         } catch (error) {
             if ((error as Record<string, unknown>).code === UNIQUE_CONSTRAINT) {
                 return { data: AUTH_ERRORS.emailAlreadyUsed, result: 'error' } satisfies SignInUpResponse;
@@ -50,11 +56,48 @@ export class AuthenticationService {
         }
     };
 
-    private getAccessToken = async (email: string, id: number) =>
-        await this.jwtService.signAsync({ sub: id, email: email } satisfies ActiveUserData, {
+    refreshTokens = async (refreshToken: string) => {
+        if (!refreshToken) {
+            return { data: AUTH_ERRORS.invalidRefreshToken, result: 'error' } satisfies SignInUpResponse;
+        }
+
+        const { sub } = await this.jwtService.verifyAsync<ActiveUserData>(refreshToken, {
+            secret: this.configService.get('JWT_SECRET'),
+            ignoreExpiration: true,
+        });
+
+        const [user] = await this.drizzleService.db.select().from(users).where(eq(users.id, sub));
+
+        if (!user) {
+            return { data: AUTH_ERRORS.invalidRefreshToken, result: 'error' } satisfies SignInUpResponse;
+        }
+
+        const isTokenIdValid = await this.refreshTokenIdsStorage.isTokenIdValid(sub, refreshToken);
+
+        if (!isTokenIdValid) {
+            return { data: AUTH_ERRORS.invalidRefreshToken, result: 'error' } satisfies SignInUpResponse;
+        }
+
+        const tokens = await this.generateTokens(user);
+        await this.refreshTokenIdsStorage.insert(user.id, tokens.refreshToken);
+
+        return { data: tokens, result: 'success' } satisfies SignInUpResponse;
+    };
+
+    private generateTokens = async (user: User) => {
+        const accessToken = await this.signToken({ email: user.email, id: user.id }, this.configService.get('JWT_ACCESS_TOKEN_TTL'));
+        const refreshToken = await this.signToken({ email: user.email, id: user.id }, this.configService.get('JWT_REFRESH_TOKEN_TTL'));
+
+        await this.refreshTokenIdsStorage.insert(user.id, refreshToken);
+
+        return { accessToken, refreshToken };
+    };
+
+    private signToken = async ({ email, id }: { email: string; id: number }, expiresIn?: number | string) =>
+        await this.jwtService.signAsync({ sub: id, email } satisfies ActiveUserData, {
             audience: this.configService.get('JWT_TOKEN_AUDIENCE'),
             issuer: this.configService.get('JWT_TOKEN_ISSUER'),
             secret: this.configService.get('JWT_SECRET'),
-            expiresIn: this.configService.get('JWT_ACCESS_TOKEN_TTL'),
+            expiresIn,
         });
 }
