@@ -11,11 +11,7 @@ import { router } from '../../main';
 
 export const Route = createFileRoute('/auth/sign-in')({
     component: RouteComponent,
-    validateSearch: zodSearchValidator(
-        z.object({
-            redirectTo: z.string().optional(),
-        }),
-    ),
+    validateSearch: zodSearchValidator(z.object({ redirectTo: z.string().optional() })),
     loaderDeps: ({ search }) => ({ redirectTo: search.redirectTo }),
 
     loader: ({ deps: { redirectTo } }) => {
@@ -60,10 +56,11 @@ function RouteComponent() {
 
     const signInForm = useForm({
         validatorAdapter: zodValidator(),
-        validators: { onChange: formSchema, onMount: formSchema },
+        validators: { onSubmit: formSchema, onBlur: formSchema, onChange: formSchema },
         defaultValues: { email: '', password: '' },
 
         onSubmit: ({ value: body }) => signIn({ body }),
+        onSubmitInvalid: () => {},
     });
 
     return (
@@ -77,29 +74,44 @@ function RouteComponent() {
         >
             <signInForm.Field
                 name="email"
-                children={(field) => (
-                    <input
-                        type="email"
-                        autoComplete="email"
-                        className="rounded-md border border-gray-300 bg-white p-2"
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                )}
+                children={(field) => {
+                    const hasErrorOnSubmit = !!field.state.meta.errorMap.onSubmit;
+                    const hasErrorOnBlur = !!field.state.meta.errorMap.onBlur && field.state.meta.isBlurred;
+
+                    return (
+                        <>
+                            <input
+                                type="email"
+                                autoComplete="email"
+                                className="rounded-md border border-gray-300 bg-white p-2"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                            />
+                            {(hasErrorOnSubmit || hasErrorOnBlur) && <em>{field.state.meta.errorMap.onChange}</em>}
+                        </>
+                    );
+                }}
             />
             <signInForm.Field
                 name="password"
-                children={(field) => (
-                    <input
-                        type="password"
-                        autoComplete="current-password"
-                        className="rounded-md border border-gray-300 bg-white p-2"
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                )}
+                children={(field) => {
+                    const hasErrorOnSubmit = !!field.state.meta.errorMap.onSubmit;
+                    const hasErrorOnBlur = !!field.state.meta.errorMap.onBlur && field.state.meta.isBlurred;
+                    return (
+                        <>
+                            <input
+                                type="password"
+                                autoComplete="current-password"
+                                className="rounded-md border border-gray-300 bg-white p-2"
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                            />
+                            {(hasErrorOnSubmit || hasErrorOnBlur) && <em>{field.state.meta.errorMap.onChange}</em>}
+                        </>
+                    );
+                }}
             />
 
             <signInForm.Subscribe

@@ -35,9 +35,7 @@ const authContract = c.router({
         body: z.object({ email: z.string(), password: z.string() }),
         responses: {
             200: tokensSchema,
-            400: z.object({
-                message: z.enum([AUTH_ERRORS.unknownUser, AUTH_ERRORS.wrongPassword]),
-            }),
+            400: z.object({ message: z.enum([AUTH_ERRORS.unknownUser, AUTH_ERRORS.wrongPassword]) }),
         },
     },
     refreshTokens: {
@@ -66,10 +64,7 @@ export const contract = c.router(
         strictStatusCodes: true,
         pathPrefix: '/api/v1',
         commonResponses: {
-            500: z.object({
-                statusCode: z.number(),
-                message: z.literal('Internal server error'),
-            }),
+            500: z.object({ statusCode: z.number(), message: z.literal('Internal server error') }),
         },
     },
 );

@@ -3,9 +3,21 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { routeTree } from './routeTree.gen';
+import './i18n/i18n-config';
 
 const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 1000 * 5, refetchOnWindowFocus: false } },
+    defaultOptions: {
+        queries: {
+            staleTime: ({ state: { data } }) => {
+                const isStatusValid = ((data as { status?: number } | undefined)?.status || 200) < 300;
+                if (isStatusValid) {
+                    return 1000 * 5;
+                }
+                return 0;
+            },
+            refetchOnWindowFocus: false,
+        },
+    },
 });
 
 export const router = createRouter({
