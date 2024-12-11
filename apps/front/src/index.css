@@ -1,1 +1,10 @@
 @import 'tailwindcss';
+
+@plugin "tailwindcss-animate";
+
+:root {
+    --radius: 0.5rem;
+    --border-radius-lg: var(--radius);
+    --border-radius-md: calc(var(--radius) - 2px);
+    --border-radius-sm: calc(var(--radius) - 4px);
+}

@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
@@ -9,12 +11,23 @@ function HomeComponent() {
     const { t } = useTranslation();
     return (
         <div className="flex h-screen w-screen flex-col items-center justify-center bg-gray-100">
-            <h1 className="text-2xl font-bold">{t('home.welcome')}</h1>
-            <p className="text-lg text-gray-600">{t('home.description')}</p>
-            <Link className="min-w-40 rounded-md bg-blue-500 px-4 py-2 text-center text-white" to="/auth/sign-up">
-                {t('home.signUp')}
-            </Link>
-            <Link to="/auth/sign-in">{t('home.signIn')}</Link>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <h1>{t('home.welcome')}</h1>
+                    </CardTitle>
+                    <CardDescription>{t('home.description')}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-4">
+                    <Button asChild>
+                        <Link to="/auth/sign-up">{t('home.signUp')}</Link>
+                    </Button>
+
+                    <Button variant={'secondary'} asChild>
+                        <Link to="/auth/sign-in">{t('home.signIn')}</Link>
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     );
 }
