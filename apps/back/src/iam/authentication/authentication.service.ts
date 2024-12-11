@@ -58,7 +58,7 @@ export class AuthenticationService {
 
     refreshTokens = async (refreshToken: string) => {
         if (!refreshToken) {
-            return { data: AUTH_ERRORS.invalidRefreshToken, result: 'error' } satisfies SignInUpResponse;
+            return { data: AUTH_ERRORS.missingRefreshToken, result: 'error' } satisfies SignInUpResponse;
         }
 
         const { sub } = await this.jwtService.verifyAsync<ActiveUserData>(refreshToken, {
@@ -69,7 +69,7 @@ export class AuthenticationService {
         const [user] = await this.drizzleService.db.select().from(users).where(eq(users.id, sub));
 
         if (!user) {
-            return { data: AUTH_ERRORS.invalidRefreshToken, result: 'error' } satisfies SignInUpResponse;
+            return { data: AUTH_ERRORS.unknownUser, result: 'error' } satisfies SignInUpResponse;
         }
 
         const isTokenIdValid = await this.refreshTokenIdsStorage.isTokenIdValid(sub, refreshToken);

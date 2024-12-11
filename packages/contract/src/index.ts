@@ -12,6 +12,7 @@ export const AUTH_ERRORS = {
     wrongPassword: 'wrongPassword',
     emailAlreadyUsed: 'emailAlreadyUsed',
     invalidRefreshToken: 'invalidRefreshToken',
+    missingRefreshToken: 'missingRefreshToken',
 } as const;
 
 export type AuthErrors = (typeof AUTH_ERRORS)[keyof typeof AUTH_ERRORS];
@@ -45,7 +46,7 @@ const authContract = c.router({
         body: z.object({ refreshToken: z.string() }),
         responses: {
             200: tokensSchema,
-            400: z.object({ message: z.literal(AUTH_ERRORS.invalidRefreshToken) }),
+            400: z.object({ message: z.enum([AUTH_ERRORS.invalidRefreshToken, AUTH_ERRORS.unknownUser, AUTH_ERRORS.missingRefreshToken]) }),
         },
     },
 });
