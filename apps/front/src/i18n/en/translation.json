@@ -1,15 +1,36 @@
 {
-    "signUp": {
-        "title": "Sign Up",
-        "email": "Email",
-        "password": "Password",
-        "confirmPassword": "Confirm Password",
-        "signUp": "Sign Up"
-    },
     "home": {
-        "welcome": "Welcome for the projection!",
         "description": "Please take a seat and enjoy the show",
         "signIn": "Sign In",
-        "signUp": "Sign Up"
+        "signUp": "Sign Up",
+        "welcome": "Welcome for the projection!"
+    },
+    "signUp": {
+        "confirmPassword": "Confirm Password",
+        "email": "Email",
+        "emailInvalid": "Invalid email address",
+        "password": "Password",
+        "passwordMinLength": "Password should contain at least 8 character",
+        "passwordMismatch": "Password confirmation doesn't match password",
+        "passwordRequireCapital": "Password should contain a capital letter",
+        "passwordRequireLowercase": "Password should contain a lowercase character",
+        "passwordRequireNumber": "Password should contain a number",
+        "signUp": "Sign Up",
+        "title": "Sign Up"
+    },
+    "signIn": {
+        "email": "Email",
+        "emailPlaceholder": "email.example@mail.com",
+        "emailInvalid": "Invalid email address",
+        "password": "Password",
+        "passwordNotDisplayedPlaceholder": "*******",
+        "passwordDisplayedPlaceholder": "SeCureP@ssword",
+        "forgetPassword": "forget your password ?",
+        "noAccount": "Don't have an account ?",
+        "signUp": "Sign up for FindName",
+        "googlAuth": "Continue with Google",
+        "signIn": "Log in to FindName",
+        "passwordMinLength": "Password contains at least 8 character",
+        "errorPasswordEmail": "Invalid password/Email combination"
     }
 }

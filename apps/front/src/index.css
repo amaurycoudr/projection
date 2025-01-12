@@ -2,6 +2,10 @@
 
 @plugin "tailwindcss-animate";
 
+.Root {
+    isolation: isolate;
+}
+
 :root {
     --radius: 0.5rem;
     --border-radius-lg: var(--radius);

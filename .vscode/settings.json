@@ -16,6 +16,24 @@
     "**/.turbo": true,
     "**/dist": true,
     "**/pgdata": true,
-    "**/redisdata": true
-  }
+    "**/redisdata": true,
+  },
+  "i18n-ally.localesPaths": "./apps/front/src/i18n/",
+  "i18n-ally.enabledFrameworks": [
+    "react"
+  ],
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.keepFulfilled": true,
+  "i18n-ally.keystyle": "nested",
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classNameBase",
+    "classNameVariants",
+    "ngClass",
+    "class:list"
+  ]
 }
